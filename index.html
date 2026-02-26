@@ -9,37 +9,40 @@
 body{
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-background:#0b2a4a;
+background:#0f2d4a;
 color:white;
 text-align:center;
 }
 
 header{
-background:#0e3b66;
+background:#163e63;
 padding:20px;
+font-size:26px;
+font-weight:bold;
 }
 
 .container{
 padding:20px;
+max-width:400px;
+margin:auto;
 }
 
-input, select{
-width:90%;
+input{
+width:100%;
 padding:15px;
 margin:10px 0;
+border-radius:10px;
 border:none;
-border-radius:8px;
 font-size:16px;
 }
 
 button{
-background:#ffcc00;
-color:#0b2a4a;
-border:none;
+width:100%;
 padding:15px;
-width:90%;
+background:#ffc107;
+border:none;
+border-radius:10px;
 font-size:18px;
-border-radius:8px;
 font-weight:bold;
 cursor:pointer;
 }
@@ -47,34 +50,21 @@ cursor:pointer;
 .resultado{
 margin-top:20px;
 font-size:22px;
+color:#ffc107;
 font-weight:bold;
-color:#ffcc00;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>🚖 Chama Car Serra</h2>
-<p>Solicite sua viagem</p>
-</header>
+<header>🚖 Chama Car Serra</header>
 
 <div class="container">
 
-<input type="text" placeholder="Local de saída">
-
-<input type="text" placeholder="Destino">
-
-<input type="number" id="km" placeholder="KM da viagem">
-
-<select>
-<option>Modelo do carro</option>
-<option>VW UP</option>
-<option>HB20</option>
-<option>Onix</option>
-<option>Outro</option>
-</select>
+<input id="origem" placeholder="Local de saída">
+<input id="destino" placeholder="Destino">
+<input id="km" placeholder="KM da viagem (ex: 8)">
 
 <button onclick="calcular()">Calcular Valor</button>
 
@@ -83,19 +73,59 @@ color:#ffcc00;
 </div>
 
 <script>
-function calcular(){
-let km = document.getElementById("km").value;
 
-if(km == ""){
-alert("Digite o KM da viagem");
-return;
+// TABELA FIXA
+const tabela = {
+"centro":15,
+"são cristóvão":15,
+"alto da conceição":15,
+"aabb":16,
+"várzea":16,
+"ipsep":16,
+"bom jesus":16,
+"cagep":16,
+"mutirão":16,
+"cohab":16,
+"universitário 2":16,
+"caxixola":18,
+"tancredo neves":18,
+"borboleta":18,
+"quitandinha":18,
+"malhada":18,
+"vila bela":20,
+"hec":22,
+"jardim das oliveiras":22,
+"uast":22
+};
+
+function calcular(){
+
+let destino = document.getElementById("destino").value.toLowerCase();
+let km = parseFloat(document.getElementById("km").value);
+let valor = 0;
+
+// verifica tabela
+if(tabela[destino]){
+valor = tabela[destino];
+}else{
+valor = km * 2.70;
 }
 
-let valor = km * 2.70;
+// adicional noturno
+let hora = new Date().getHours();
+
+if(hora >= 22 && hora < 24){
+valor += 5;
+}
+
+if(hora >= 0 && hora < 5){
+valor += 10;
+}
 
 document.getElementById("valor").innerHTML =
 "Valor da viagem: R$ " + valor.toFixed(2);
 }
+
 </script>
 
 </body>
